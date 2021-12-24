@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"> <!--используем шаблонизатор thymeleaf, мы это указывали в POM.XML-->
+<head>
+    <title>Редактирование статьи</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container mt-5 mb-5"> <!-- container встроенный класс в бутстрапе, который добавит некоторые доп отступы для самого блока(mt-5 отступ сверху 50 пикселей -->
+    <h1>Редактирование статьи</h1>
+    <div th:each="el : ${post}">
+        <form method="post"> <!-- Обратботка всех поступающих данных будет проводится на этой же странице (method="post"-скрытый метод передачи данных)-->
+            <input type="text" th:value="${el.title}" name = "title" placeholder="Введите название статьи" class="form-control"><br>
+            <input type="text" th:value="${el.anons}" name = "anons" placeholder="Введите анонс статьи" class="form-control"><br>
+            <textarea name ="full_text" placeholder="Введите полный текст статьи" class="form-control" th:text = "${el.full_text}" /><br>
+            <button type="submit" class="btn btn-success">Обновить</button> <!--type="submit" по нажатию на кнопку страничка будет перезагружаться -->
+        </form>
+    </div>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+
+</body>
+</html>

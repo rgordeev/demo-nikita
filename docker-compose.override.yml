@@ -1,0 +1,39 @@
+version: "3.4"
+services:
+  mysql:
+    image: mysql:8
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql-db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
+      - MYSQL_DATABASE=spring_web_blog
+    networks:
+      backend: { aliases: [mysql.backend] }
+
+  demo:
+    depends_on:
+      - mysql
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS}
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql.backend:3306/spring_web_blog
+      - SPRING_DATASOURCE_USERNAME=mysql
+      - SPRING_DATASOURCE_PASSWORD=mysql
+    ports:
+      - 8080:8080
+      - 5050:5050
+    volumes:
+      - demo-logs:/usr/share/app/logs
+    networks:
+      backend: { aliases: [demo.backend] }
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  mysql-db-data:
+  demo-logs:
